@@ -15,7 +15,7 @@ You can install these libraries using `pip`:
 pip install opencv-python mediapipe
 ```
 
-## How to Run the Project
+## How to Run the Project 🦾🔥
 
 1. Clone this repository to your local machine:
 
@@ -40,14 +40,14 @@ pip install opencv-python mediapipe
 
 4. Press `q` to exit the program.
 
-## How It Works
+## How It Works 👷🏻‍♀️🪜
 
 - **MediaPipe Hands** is used to detect the hand landmarks and their connections in real-time. Each hand's landmarks are stored in a list of 21 points, each with 3D coordinates (x, y, z).
 - The script starts by opening the webcam feed using OpenCV. It then processes each frame to detect hands.
 - Once hands are detected, the landmarks and connections are drawn on the frame using OpenCV.
 - The frame is displayed in a window, and you can press `q` to exit the application.
 
-## Landmarks Information
+## Landmarks Information ⭕️❎
 
 Each hand has 21 landmarks, numbered from 0 to 20. Here are the main landmarks:
 
