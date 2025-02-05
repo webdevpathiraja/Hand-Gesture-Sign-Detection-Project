@@ -1,4 +1,5 @@
-Copyright © 2025 webdevpathirajaAll rights reserved. This project is licensed under the MIT License.
+Copyright © 2025 webdevpathiraja
+All rights reserved. This project is licensed under the MIT License.
 
 # 🫲🏼👌🏼Real-Time Hand Tracking with MediaPipe 🤚🏼👋🏼
 
