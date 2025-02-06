@@ -49,7 +49,7 @@ while True:
                 x = int(lm_list[tip].x * w)  # Store x-coordinate
                 y = int(lm_list[tip].y * h)  # Store y-coordinate
 
-                print(f"  Landmark {tip}: x={x}, y={y}") # Print coordinates
+                # print(f"  Landmark {tip}: x={x}, y={y}") # Print coordinates
 
                 # Draw a circle at the fingertip position
                 cv2.circle(frame, (x, y), 12, (100, 149, 237), cv2.FILLED)
@@ -67,14 +67,25 @@ while True:
 
             print(finger_fold_status)
 
-            # *************** LIKE (Thumbs-up) gesture detected ***************
-            # Check if the thumb is positioned upwards by comparing the y-coordinates 👍
-            # The thumb tip should be above (have a higher y-value (4)) than its previous joints (3, 2)
+            # *************** LIKE (Thumbs-up) gesture detected 👍 ***************
+            # if the thumb is positioned upwards
+            # the thumb tip should be above its previous joints
+            # that is the thumb tip's y must be lower than its previous joint's y values
 
-            # Verify if all other fingers are folded (indicating a thumbs-up gesture)
             if lm_list[thumb_tip].y < lm_list[thumb_tip - 1].y < lm_list[thumb_tip - 2].y:
+
+                # Verify if all other fingers are folded (indicating a thumbs-up gesture)
                 if all(finger_fold_status):
                     print("LIKE")
+
+            # *************** DISLIKE (Thumbs-up) gesture detected 👎 ***************
+            # if the thumb is positioned downwards
+            # the thumb tip must be below its previous joints
+            # that is the thumb tip's y must be greater than its previous joint's y values
+
+            if lm_list[thumb_tip].y > lm_list[thumb_tip - 1].y > lm_list[thumb_tip - 2].y:
+                if all(finger_fold_status):
+                    print("DISLIKE")
 
 
 
