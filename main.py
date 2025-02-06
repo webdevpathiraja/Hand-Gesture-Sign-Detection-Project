@@ -23,6 +23,7 @@ print("Camera started successfully!")
 
 while True:
     ret, frame = cap.read()
+    frame = cv2.flip(frame, 1)
     h, w, c = frame.shape
     if not ret:
         print("Failed to capture frame")
@@ -49,7 +50,15 @@ while True:
                 print(f"  Landmark {tip}: x={x}, y={y}") # Print coordinates
 
                 # Draw a circle at the fingertip position
-                cv2.circle(frame, (x, y), 12, (255, 0, 0), cv2.FILLED)
+                cv2.circle(frame, (x, y), 12, (100, 149, 237), cv2.FILLED)
+
+                # change the color of the fingertip if the finger is folded
+                # if the fingertip's x is smaller than the finger's base x, that finger is folded
+                if lm_list[tip].x < lm_list[tip - 3].x:
+                    # change the color of the fingertip indicator to differentiate the folded state
+                    cv2.circle(frame, (x, y), 12, (151, 53, 255), cv2.FILLED)
+
+
 
 
             # Draw hand landmarks on the frame with red dots and green lines
