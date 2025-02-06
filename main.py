@@ -99,6 +99,7 @@ while True:
             distance = ((thumb_x - index_x) ** 2 + (thumb_y - index_y) ** 2) ** 0.5
 
             if distance < 0.05:  # Small threshold to detect touch
+
                 # Check if the other three fingers are extended (not folded)
                 if not finger_fold_status[1] and not finger_fold_status[2] and not finger_fold_status[3]:
                     print("OK👌 gesture detected")
@@ -123,7 +124,7 @@ while True:
 
 
             # *********************** CALL ME 🤙 ***********************
-            # check if middle, index, and pinky fingers are folded (i.e., their fold status is True)
+            # check if middle, index, and pinky fingers are folded (their fold status is True)
             if finger_fold_status[0] and finger_fold_status[1] and finger_fold_status[3]:  # index, middle, pinky folded
 
                 # check if the thumb and pinky are extended and far apart
@@ -134,11 +135,22 @@ while True:
                 distance_thumb_pinky = ((thumb_x - pinky_x) ** 2 + (thumb_y - pinky_y) ** 2) ** 0.5
 
                 # if the distance between the thumb and pinky is high
-                if distance_thumb_pinky > 0.15:
-                    print("Call ME🤙 Gesture Detected")
+                if distance_thumb_pinky > 0.4:
+                    print("Call ME🤙 gesture detected")
                     cv2.putText(frame, "CALL ME", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
-            # Draw hand landmarks on the frame with red dots and green lines
+
+            # *********************** Stop ✋ ***********************
+            # check if all fingers are extended (upward)
+            if lm_list[thumb_tip].y < lm_list[thumb_tip - 1].y < lm_list[thumb_tip - 2].y and \
+                    lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+                    lm_list[12].y < lm_list[10].y < lm_list[9].y and \
+                    lm_list[16].y < lm_list[14].y < lm_list[13].y and \
+                    lm_list[20].y < lm_list[18].y < lm_list[17].y:
+                print("Stop✋ gesture detected")
+                cv2.putText(frame, "STOP", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
+            # draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
                 frame, hand_landmarks, mp_hands.HAND_CONNECTIONS,
                 dot_spec, line_spec
