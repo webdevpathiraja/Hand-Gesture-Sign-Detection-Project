@@ -150,6 +150,18 @@ while True:
                 print("Stop✋ gesture detected")
                 cv2.putText(frame, "STOP", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
+            # *********************** FORWARD 👆 ***********************
+            # check if index finger is extended upward (8.y < 6.y)
+            # check if all 3 middle, ring and pinky fingers are folded 
+            # check if the thumb finger is folded (4.x < 3.x)
+            if lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+                lm_list[12].y > lm_list[11].y > lm_list[10].y and \
+                lm_list[16].y > lm_list[15].y > lm_list[14].y and \
+                lm_list[20].y > lm_list[19].y > lm_list[18].y and \
+                lm_list[thumb_tip].x < lm_list[thumb_tip - 1].x:
+                print("Forward👆 sign gesture detected")
+                cv2.putText(frame, "FORWARD", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
             # draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
                 frame, hand_landmarks, mp_hands.HAND_CONNECTIONS,
