@@ -158,7 +158,7 @@ while True:
                 lm_list[12].y > lm_list[11].y > lm_list[10].y and \
                 lm_list[16].y > lm_list[15].y > lm_list[14].y and \
                 lm_list[20].y > lm_list[19].y > lm_list[18].y and \
-                lm_list[thumb_tip].x < lm_list[thumb_tip - 1].x:
+                lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
                 print("FORWARD✋ gesture detected")
                 cv2.putText(frame, "FORWARD", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
@@ -187,9 +187,21 @@ while True:
                 print("RIGHT👉 gesture detected")
                 cv2.putText(frame, "RIGHT", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
-                
 
-            # draw hand landmarks on the frame with red dots and green lines
+            # *********************** I LOVE YOU 🤟 ***********************
+            # check if the index finger is raised upwards (8.y < 6.y)
+            # check if the thumb is extended (4.x > 3.x)
+            # check if the pinky finger is raised upwards (20.y < 19.y)
+            # check if middle and ring fingers are folded
+            if lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+                    lm_list[12].y > lm_list[11].y > lm_list[10].y and \
+                    lm_list[16].y > lm_list[15].y > lm_list[14].y and \
+                    lm_list[20].y < lm_list[19].y < lm_list[18].y and \
+                    lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
+                print("I love you🤟 gesture detected")
+                cv2.putText(frame, "I love you", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
+                # draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
                 frame, hand_landmarks, mp_hands.HAND_CONNECTIONS,
                 dot_spec, line_spec
