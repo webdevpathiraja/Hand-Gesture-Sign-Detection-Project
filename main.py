@@ -13,6 +13,8 @@ dot_spec = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2)   # Red for dots
 # Start video capture
 cap = cv2.VideoCapture(0)
 
+finger_tips = [8, 12, 16, 20]
+
 if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
@@ -21,6 +23,7 @@ print("Camera started successfully!")
 
 while True:
     ret, frame = cap.read()
+    h, w, c = frame.shape
     if not ret:
         print("Failed to capture frame")
         break
@@ -34,8 +37,20 @@ while True:
     if results.multi_hand_landmarks:
         for hand_no, hand_landmarks in enumerate(results.multi_hand_landmarks):
             print(f"Hand {hand_no + 1} Landmarks:")
+            lm_list = []   # List to store landmark positions
+
             for i, lm in enumerate(hand_landmarks.landmark):
-                print(f"  Landmark {i}: x={lm.x:.4f}, y={lm.y:.4f}, z={lm.z:.4f}")
+                lm_list.append(lm) # Append each landmark to the list
+
+            for tip in finger_tips:
+                x = int(lm_list[tip].x * w)  # Store x-coordinate
+                y = int(lm_list[tip].y * h)  # Store y-coordinate
+
+                print(f"  Landmark {tip}: x={x}, y={y}") # Print coordinates
+
+                # Draw a circle at the fingertip position
+                cv2.circle(frame, (x, y), 12, (255, 0, 0), cv2.FILLED)
+
 
             # Draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
