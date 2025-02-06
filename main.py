@@ -76,8 +76,9 @@ while True:
 
                 # Verify if all other fingers are folded (indicating a thumbs-up gesture)
                 if all(finger_fold_status):
-                    print("LIKE gesture detected")
+                    print("LIKE👍 gesture detected")
                     cv2.putText(frame, "LIKE", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
+
 
             # *************** DISLIKE (Thumbs-down)👎 ***************
             # if the thumb is positioned downwards
@@ -86,8 +87,9 @@ while True:
 
             if lm_list[thumb_tip].y > lm_list[thumb_tip - 1].y > lm_list[thumb_tip - 2].y:
                 if all(finger_fold_status):
-                    print("DISLIKE gesture detected")
+                    print("DISLIKE👎 gesture detected")
                     cv2.putText(frame, "DISLIKE", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
 
             # ************************ OK 👌 ************************
             # check if thumb tip and index tip are close
@@ -99,14 +101,15 @@ while True:
             if distance < 0.05:  # Small threshold to detect touch
                 # Check if the other three fingers are extended (not folded)
                 if not finger_fold_status[1] and not finger_fold_status[2] and not finger_fold_status[3]:
-                    print("OK gesture detected")
+                    print("OK👌 gesture detected")
                     cv2.putText(frame, "OK", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
 
             # *********************** PEACE ✌️ ***********************
             # check if thumb, ring, and pinky are close (using distance calculation)
             thumb_x, thumb_y = lm_list[thumb_tip].x, lm_list[thumb_tip].y
-            ring_x, ring_y = lm_list[16].x, lm_list[16].y  # Ring finger tip
-            pinky_x, pinky_y = lm_list[20].x, lm_list[20].y  # Pinky finger tip
+            ring_x, ring_y = lm_list[16].x, lm_list[16].y  # Ring fingertip
+            pinky_x, pinky_y = lm_list[20].x, lm_list[20].y  # Pinky fingertip
 
             # calculate the distance between thumb, ring, and pinky tips
             distance_thumb_ring = ((thumb_x - ring_x) ** 2 + (thumb_y - ring_y) ** 2) ** 0.5
@@ -115,8 +118,25 @@ while True:
             if distance_thumb_ring < 0.05 and distance_ring_pinky < 0.05:  # check if the fingers are close
                 # check if the index and middle fingers are extended (not folded)
                 if not finger_fold_status[0] and not finger_fold_status[1]:  # index and middle fingers
-                    print("PEACE gesture detected")
+                    print("PEACE✌️ gesture detected")
                     cv2.putText(frame, "PEACE", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
+
+            # *********************** CALL ME 🤙 ***********************
+            # check if middle, index, and pinky fingers are folded (i.e., their fold status is True)
+            if finger_fold_status[0] and finger_fold_status[1] and finger_fold_status[3]:  # index, middle, pinky folded
+
+                # check if the thumb and pinky are extended and far apart
+                thumb_x, thumb_y = lm_list[thumb_tip].x, lm_list[thumb_tip].y
+                pinky_x, pinky_y = lm_list[20].x, lm_list[20].y  # pinky finger tip
+
+                # calculate distance between thumb and pinky
+                distance_thumb_pinky = ((thumb_x - pinky_x) ** 2 + (thumb_y - pinky_y) ** 2) ** 0.5
+
+                # if the distance between the thumb and pinky is high
+                if distance_thumb_pinky > 0.15:
+                    print("Call ME🤙 Gesture Detected")
+                    cv2.putText(frame, "CALL ME", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
             # Draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
