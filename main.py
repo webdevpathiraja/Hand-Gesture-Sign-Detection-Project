@@ -14,6 +14,7 @@ dot_spec = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2)   # Red for dots
 cap = cv2.VideoCapture(0)
 
 finger_tips = [8, 12, 16, 20]
+thumb_tip = 4
 
 if not cap.isOpened():
     print("Error: Could not open camera.")
@@ -39,6 +40,7 @@ while True:
         for hand_no, hand_landmarks in enumerate(results.multi_hand_landmarks):
             print(f"Hand {hand_no + 1} Landmarks:")
             lm_list = []   # List to store landmark positions
+            finger_fold_status = []
 
             for i, lm in enumerate(hand_landmarks.landmark):
                 lm_list.append(lm) # Append each landmark to the list
@@ -55,8 +57,26 @@ while True:
                 # change the color of the fingertip if the finger is folded
                 # if the fingertip's x is smaller than the finger's base x, that finger is folded
                 if lm_list[tip].x < lm_list[tip - 3].x:
+
                     # change the color of the fingertip indicator to differentiate the folded state
                     cv2.circle(frame, (x, y), 12, (151, 53, 255), cv2.FILLED)
+                    finger_fold_status.append(True)
+
+                else:
+                    finger_fold_status.append(False)
+
+            print(finger_fold_status)
+
+            # *************** LIKE (Thumbs-up) gesture detected ***************
+            # Check if the thumb is positioned upwards by comparing the y-coordinates 👍
+            # The thumb tip should be above (have a higher y-value (4)) than its previous joints (3, 2)
+
+            # Verify if all other fingers are folded (indicating a thumbs-up gesture)
+            if lm_list[thumb_tip].y < lm_list[thumb_tip - 1].y < lm_list[thumb_tip - 2].y:
+                if all(finger_fold_status):
+                    print("LIKE")
+
+
 
 
 
