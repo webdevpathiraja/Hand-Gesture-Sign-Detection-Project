@@ -1,14 +1,18 @@
-## **Sign Language Detection with Hand Landmarks**
+## ⭕ **Sign Language Detection with Hand Landmarks** ⛳🔥
 
 This repository provides a method for recognizing sign language gestures using **hand landmarks** provided by the **MediaPipe library**. The **hand landmarks** are used to detect the relative positioning of the fingers in 3D space, which allows for gesture recognition. 
 
 The gestures are detected by comparing the **x** and **y** coordinates of the landmarks and analyzing their relative positions.
 
-### **Hand Landmarks:**
+### ⭕ **Hand Landmarks:**
 
 The **21 hand landmarks** correspond to the joints and tips of the fingers. The **x** and **y** coordinates are used to determine the relative positions of these landmarks for gesture recognition.
 
-#### **Landmark Breakdown:**
+#### ⭕ **Landmark Breakdown:**
+
+![Hand Landmarks](https://github.com/webdevpathiraja/Hand-Gesture-Sign-Detection-Project/blob/main/resources/hand-landmarks.png)
+*The image above shows the positions of the 21 hand landmarks on the hand.*
+
 1. **Landmark 0 (Wrist)**: The base of the palm (root landmark).
 2. **Landmark 1 (Thumb base)**: The base joint of the thumb, near the wrist.
 3. **Landmark 2 (Thumb first joint)**: The first joint of the thumb.
@@ -31,19 +35,13 @@ The **21 hand landmarks** correspond to the joints and tips of the fingers. The 
 20. **Landmark 19 (Pinky second joint)**: The second joint of the pinky.
 21. **Landmark 20 (Pinky tip)**: The tip of the pinky finger.
 
-**Hand Landmark Image**:  
-![Hand Landmarks](path_to_image.jpg)  
-*The image above shows the positions of the 21 hand landmarks on the hand.*
-
 ---
 
-### **Logic for Gesture Detection Using Hand Landmarks**
+### ⭕ **Logic for Gesture Detection Using Hand Landmarks**
 
 Here’s a detailed explanation of how gestures are detected based on the relative positions of the hand landmarks, focusing on the **x** and **y** coordinates:
 
----
-
-### **1. LIKE (Thumbs-Up) 👍**
+### **1. LIKE (Thumbs-Up) 👍🏽**
 
 #### **Key Landmarks:**
 - **Thumb (1-4)** and **Other Fingers (5-20)**
@@ -69,7 +67,7 @@ if lm_list[thumb_tip].y < lm_list[thumb_tip - 1].y < lm_list[thumb_tip - 2].y:
 
 ---
 
-### **2. DISLIKE (Thumbs-Down) 👎**
+### **2. DISLIKE (Thumbs-Down) 👎🏻**
 
 #### **Key Landmarks:**
 - **Thumb (1-4)** and **Other Fingers (5-20)**
@@ -90,7 +88,7 @@ if lm_list[thumb_tip].y > lm_list[thumb_tip - 1].y > lm_list[thumb_tip - 2].y:
 
 ---
 
-### **3. OK 👌**
+### **3. OK 👌🏽**
 
 #### **Key Landmarks:**
 - **Thumb (1-4)** and **Index Finger (5-8)**
@@ -113,7 +111,7 @@ if distance < 0.05:
 
 ---
 
-### **4. PEACE ✌️**
+### **4. PEACE ✌🏻**
 
 #### **Key Landmarks:**
 - **Thumb (1-4)**, **Ring Finger (13-16)**, **Pinky Finger (17-20)**, **Index Finger (5-8)**
@@ -136,7 +134,7 @@ if distance_thumb_ring < 0.05 and distance_ring_pinky < 0.05:
 
 ---
 
-### **5. CALL ME 🤙**
+### **5. CALL ME 🤙🏽**
 
 #### **Key Landmarks:**
 - **Thumb (1-4)**, **Pinky Finger (17-20)**, **Index Finger (5-8)**, **Middle Finger (9-12)**
@@ -159,6 +157,147 @@ if distance_thumb_pinky > 0.1:
 
 ---
 
-This README section thoroughly covers the logic and how **x** and **y** coordinates are analyzed to detect gestures. Each gesture’s corresponding landmarks are explained, and how those landmarks relate to the **x** and **y** coordinates for recognition.
+Here's the updated explanation with a detailed breakdown of the logic, hand landmarks, and how the **x** and **y** coordinates are used to detect the gestures.
 
-Let me know if you'd like to add or modify anything further!
+---
+
+### **6. STOP ✋🏻**
+
+#### **Key Landmarks:**
+- **Thumb (1-4)** and **Other Fingers (5-20)**
+
+#### **Logic:**
+To detect the **STOP** gesture, all fingers should be fully extended, which means the **y-coordinate** of each finger’s tip (landmarks 4, 8, 12, 16, 20) must be lower than the previous joint. 
+- **Thumb (1-4)**: The **y-coordinate** of the thumb tip (landmark 4) must be lower than landmarks 3 and 2.
+- **Index (5-8)**, **Middle (9-12)**, **Ring (13-16)**, and **Pinky (17-20)**: The **y-coordinate** of each finger tip should be lower than its previous joint's **y-coordinate** (ensuring the finger is extended upward).
+
+#### **How it Works:**
+- Each of the five fingers (thumb, index, middle, ring, pinky) should be fully extended.
+- The **y-coordinates** of each of these tips will be lower than their base joints (e.g., for the index finger, landmark 8’s **y-coordinate** will be lower than landmark 6, and so on for the rest of the fingers).
+
+```python
+if lm_list[thumb_tip].y < lm_list[thumb_tip - 1].y < lm_list[thumb_tip - 2].y and \
+    lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+    lm_list[12].y < lm_list[10].y < lm_list[9].y and \
+    lm_list[16].y < lm_list[14].y < lm_list[13].y and \
+    lm_list[20].y < lm_list[18].y < lm_list[17].y:
+    print("Stop✋ gesture detected")
+    cv2.putText(frame, "STOP", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
+```
+
+---
+
+### **7. FORWARD 👆🏻**
+
+#### **Key Landmarks:**
+- **Thumb (1-4)**, **Index Finger (5-8)**, **Middle Finger (9-12)**, **Ring Finger (13-16)**, **Pinky Finger (17-20)**
+
+#### **Logic:**
+To detect the **FORWARD** gesture, the **index finger** must be raised upward, while the other fingers should be folded.
+- **Index Finger (5-8)**: The **y-coordinate** of landmark 8 (tip) should be higher than landmarks 6 and 5 (showing it is extended).
+- **Thumb (1-4)**: The **thumb** should be folded inward, so the **x-coordinate** of the thumb tip (landmark 4) should be less than landmark 3.
+- **Middle, Ring, and Pinky Fingers (9-20)**: These should be folded, meaning their **y-coordinates** for the tips (landmarks 12, 16, 20) should be lower than the previous joints (landmarks 11, 15, 19).
+
+#### **How it Works:**
+- **Index Finger** is checked for extension (higher **y-coordinate** at the tip).
+- **Other fingers** are checked to ensure they are folded by comparing their **y-coordinates**.
+- The **thumb** is folded by comparing its **x-coordinates**.
+
+```python
+if lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+    lm_list[12].y > lm_list[11].y > lm_list[10].y and \
+    lm_list[16].y > lm_list[15].y > lm_list[14].y and \
+    lm_list[20].y > lm_list[19].y > lm_list[18].y and \
+    lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
+    print("FORWARD✋ gesture detected")
+    cv2.putText(frame, "FORWARD", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
+```
+
+---
+
+### **8. LEFT 👈🏽**
+
+#### **Key Landmarks:**
+- **Thumb (1-4)**, **Index Finger (5-8)**, **Middle Finger (9-12)**, **Ring Finger (13-16)**, **Pinky Finger (17-20)**
+
+#### **Logic:**
+To detect the **LEFT** gesture, the **thumb** should be raised upwards, and all fingers should point to the left side.
+- **Thumb (1-4)**: The **y-coordinate** of the thumb tip (landmark 4) should be less than landmark 2, indicating the thumb is pointing upward.
+- **Index Finger (5-8)**: The **x-coordinate** of the index finger tip (landmark 8) should be less than landmark 6 (pointing to the left).
+- **Middle, Ring, and Pinky Fingers (9-20)**: These should all point to the left. Their **x-coordinates** will have specific values compared to each other to check for leftward direction.
+
+#### **How it Works:**
+- **Thumb** should be raised (i.e., its **y-coordinate** is smaller than its first joint's **y-coordinate**).
+- **Index Finger** should be pointing to the left (i.e., its **x-coordinate** is smaller than the previous joint's **x-coordinate**).
+- **Other fingers** (middle, ring, pinky) should also follow a leftward pointing pattern based on their **x-coordinates**.
+
+```python
+if lm_list[4].y < lm_list[2].y and \
+    lm_list[8].x < lm_list[6].x and \
+    lm_list[12].x > lm_list[10].x and \
+    lm_list[16].x > lm_list[14].x and \
+    lm_list[20].x > lm_list[18].x and \
+    lm_list[5].x < lm_list[0].x:
+    print("LEFT👈 gesture detected")
+    cv2.putText(frame, "LEFT", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
+```
+
+---
+
+### **9. RIGHT 👉🏻**
+
+#### **Key Landmarks:**
+- **Thumb (1-4)**, **Index Finger (5-8)**, **Middle Finger (9-12)**, **Ring Finger (13-16)**, **Pinky Finger (17-20)**
+
+#### **Logic:**
+To detect the **RIGHT** gesture, the **thumb** should be raised upward, and all fingers should point to the right.
+- **Thumb (1-4)**: The **y-coordinate** of the thumb tip (landmark 4) should be less than landmark 2, indicating the thumb is raised.
+- **Index Finger (5-8)**: The **x-coordinate** of the index finger tip (landmark 8) should be greater than landmark 6 (pointing right).
+- **Middle, Ring, and Pinky Fingers (9-20)**: These should be folded or pointing rightward. Their **x-coordinates** will have specific values compared to each other to check for rightward direction.
+
+#### **How it Works:**
+- **Thumb** should be raised (i.e., its **y-coordinate** is smaller than its first joint's **y-coordinate**).
+- **Index Finger** should be pointing to the right (i.e., its **x-coordinate** is greater than its base joint's **x-coordinate**).
+- **Other fingers** should also be pointing rightward, based on their **x-coordinates**.
+
+```python
+if lm_list[4].y < lm_list[2].y and \
+    lm_list[8].x > lm_list[6].x and \
+    lm_list[12].x < lm_list[10].x and \
+    lm_list[16].x < lm_list[14].x and \
+    lm_list[20].x < lm_list[18].x:
+    print("RIGHT👉 gesture detected")
+    cv2.putText(frame, "RIGHT", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
+```
+
+---
+
+### **10. LOVE YOU 🤟🏽**
+
+#### **Key Landmarks:**
+- **Thumb (1-4)**, **Index Finger (5-8)**, **Pinky Finger (17-20)**
+
+#### **Logic:**
+To detect the **LOVE YOU** gesture:
+- **Thumb (1-4)**: The **thumb** should be extended outward (its **x-coordinate** will be greater than the second joint's **x-coordinate**).
+- **Index Finger (5-8)**: The **index finger** should be extended upward.
+- **Pinky Finger (17-20)**: The **pinky** should be extended upward.
+- **Middle (9-12)** and **Ring Fingers (13-16)**: These should be folded.
+
+#### **How it Works:**
+- **Thumb** is extended outward by comparing its **x-coordinates**.
+- **Index and Pinky fingers** are raised by comparing their **y-coordinates**.
+- **Middle and Ring fingers** should be folded, meaning their **y-coordinates** for the tips should be lower than their base joints.
+
+```python
+if lm_list[8].y < lm_list[6].y < lm_list[5].y and \
+    lm_list[12].y > lm_list[11].y > lm_list[10].y and \
+    lm_list[16].y > lm_list[15].y > lm_list[14].y and \
+    lm_list[20].y < lm_list[19].y < lm_list[18].y and \
+    lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
+    print("I love you🤟 gesture detected")
+    cv2.putText(frame, "I LOVE YOU", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
+```
+
+---
+
