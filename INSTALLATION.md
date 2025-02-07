@@ -38,7 +38,7 @@ This will open a webcam window showing the tracked hand landmarks. The landmarks
 Press **q** to exit the program.
 
 ## 👷🏻‍♀️ How It Works 🪜
-The detailed explanation of the logic and how the hand sign detection is implemented can be found in the [README file](README.md).
+❎ The detailed explanation of the logic and how the hand sign detection is implemented can be found in the [README file](README.md).
 
 In this final phase of the project, hand gesture detection is integrated alongside hand landmark tracking. The system not only detects hand landmarks but also identifies specific hand gestures based on the positioning of the fingers.
 
@@ -51,7 +51,7 @@ The script processes each video frame to detect hand landmarks using MediaPipe.
 
 The project recognizes several hand gestures by analyzing the relative positions of the hand landmarks.
 
-🤚🏽 Gesture Detection Logic:
+❌ Gesture Detection Logic 🔥
 
 The detailed explanation of the logic and how the hand sign detection is implemented can be found in the [README file](README.md).
 
