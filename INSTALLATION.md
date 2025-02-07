@@ -17,8 +17,8 @@ pip install opencv-python mediapipe
 2. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/AI-Hand-Tracking-on-CPU-in-Real-Time.git
-cd AI-Hand-Tracking-on-CPU-in-Real-Time
+git clone https://github.com/webdevpathiraja/Hand-Gesture-Sign-Detection-Project
+cd Hand-Gesture-Sign-Detection-Project
 ```
 
 3. Install the necessary dependencies:
