@@ -11,7 +11,7 @@ line_spec = mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2)  # Green for lin
 dot_spec = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2)  # Red for dots
 
 # Start video capture
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 finger_tips = [8, 12, 16, 20]
 thumb_tip = 4
@@ -161,7 +161,7 @@ while True:
                 lm_list[16].y > lm_list[15].y > lm_list[14].y and \
                 lm_list[20].y > lm_list[19].y > lm_list[18].y and \
                 lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
-                print("FORWARD✋ gesture detected")
+                print("FORWARD👆 gesture detected")
                 cv2.putText(frame, "FORWARD", (100, 120), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
 
 
