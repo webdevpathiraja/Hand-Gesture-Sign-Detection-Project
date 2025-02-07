@@ -11,7 +11,7 @@ line_spec = mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2)  # Green for lin
 dot_spec = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2)  # Red for dots
 
 # Start video capture
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 finger_tips = [8, 12, 16, 20]
 thumb_tip = 4
@@ -25,6 +25,8 @@ print("Camera started successfully!")
 while True:
     ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
+    frame = cv2.resize(frame, (640, 480))  # Resize to match the webcam resolution
+
     h, w, c = frame.shape
     if not ret:
         print("Failed to capture frame")
@@ -77,7 +79,7 @@ while True:
                 # Verify if all other fingers are folded (indicating a thumbs-up gesture)
                 if all(finger_fold_status):
                     print("LIKE👍 gesture detected")
-                    cv2.putText(frame, "LIKE", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                    cv2.putText(frame, "LIKE", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *************** DISLIKE (Thumbs-down)👎 ***************
@@ -88,7 +90,7 @@ while True:
             if lm_list[thumb_tip].y > lm_list[thumb_tip - 1].y > lm_list[thumb_tip - 2].y:
                 if all(finger_fold_status):
                     print("DISLIKE👎 gesture detected")
-                    cv2.putText(frame, "DISLIKE", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                    cv2.putText(frame, "DISLIKE", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # ************************ OK 👌 ************************
@@ -103,7 +105,7 @@ while True:
                 # Check if the other three fingers are extended (not folded)
                 if not finger_fold_status[1] and not finger_fold_status[2] and not finger_fold_status[3]:
                     print("OK👌 gesture detected")
-                    cv2.putText(frame, "OK", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                    cv2.putText(frame, "OK", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** PEACE ✌️ ***********************
@@ -120,7 +122,7 @@ while True:
                 # check if the index and middle fingers are extended (not folded)
                 if not finger_fold_status[0] and not finger_fold_status[1]:  # index and middle fingers
                     print("PEACE✌️ gesture detected")
-                    cv2.putText(frame, "PEACE", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                    cv2.putText(frame, "PEACE", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** CALL ME 🤙 ***********************
@@ -137,7 +139,7 @@ while True:
                 # if the distance between the thumb and pinky is high
                 if distance_thumb_pinky > 0.4:
                     print("Call ME🤙 gesture detected")
-                    cv2.putText(frame, "CALL ME", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                    cv2.putText(frame, "CALL ME", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** Stop ✋ ***********************
@@ -148,7 +150,7 @@ while True:
                     lm_list[16].y < lm_list[14].y < lm_list[13].y and \
                     lm_list[20].y < lm_list[18].y < lm_list[17].y:
                 print("Stop✋ gesture detected")
-                cv2.putText(frame, "STOP", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                cv2.putText(frame, "STOP", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
             # *********************** FORWARD 👆 ***********************
             # check if index finger is extended upward (8.y < 6.y)
@@ -160,7 +162,7 @@ while True:
                 lm_list[20].y > lm_list[19].y > lm_list[18].y and \
                 lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
                 print("FORWARD✋ gesture detected")
-                cv2.putText(frame, "FORWARD", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                cv2.putText(frame, "FORWARD", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** LEFT 👈 ***********************
@@ -175,7 +177,7 @@ while True:
                     lm_list[20].x > lm_list[18].x and \
                     lm_list[5].x < lm_list[0].x:
                 print("LEFT👈 gesture detected")
-                cv2.putText(frame, "LEFT", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                cv2.putText(frame, "LEFT", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** RIGHT 👉 ***********************
@@ -185,7 +187,7 @@ while True:
                     lm_list[16].x < lm_list[14].x and \
                     lm_list[20].x < lm_list[18].x:
                 print("RIGHT👉 gesture detected")
-                cv2.putText(frame, "RIGHT", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                cv2.putText(frame, "RIGHT", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
 
             # *********************** I LOVE YOU 🤟 ***********************
@@ -199,7 +201,7 @@ while True:
                     lm_list[20].y < lm_list[19].y < lm_list[18].y and \
                     lm_list[thumb_tip].x > lm_list[thumb_tip - 1].x:
                 print("I love you🤟 gesture detected")
-                cv2.putText(frame, "I LOVE YOU", (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+                cv2.putText(frame, "I LOVE YOU", (100, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
                 # draw hand landmarks on the frame with red dots and green lines
             mp_draw.draw_landmarks(
